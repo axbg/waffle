@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@fireworks-js/vue": "^2.10.4",
+    "array-shuffle": "^3.0.0",
+    "axios": "^1.4.0",
     "vue": "^3.3.2"
   },
   "devDependencies": {
