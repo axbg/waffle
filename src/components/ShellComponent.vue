@@ -28,6 +28,7 @@ const loadedDataSource = async (dataSource) => {
     alert("There was an error loading the resource. Please try again.");
     console.log(err);
     localStorage.removeItem("dataSource");
+    location.reload();
   }
 }
 
