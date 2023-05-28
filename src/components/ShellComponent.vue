@@ -3,6 +3,7 @@ import HeaderComponent from "./HeaderComponent.vue";
 import LandingComponent from "./LandingComponent.vue";
 import GalleryComponent from "./GalleryComponent.vue";
 import RaffleComponent from "./RaffleComponent.vue";
+import ControlComponent from "./ControlComponent.vue";
 
 import axios from "axios";
 import { reactive, onMounted } from "vue";
@@ -64,6 +65,7 @@ onMounted(() => {
 
 <template>
   <div class="shell-container">
+    <ControlComponent />
     <HeaderComponent />
     <div class="content-container">
       <LandingComponent
