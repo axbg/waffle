@@ -1,5 +1,5 @@
 <script setup>
-import ShellComponent from './components/ShellComponent.vue';
+import ShellComponent from "./components/ShellComponent.vue";
 </script>
 
 <template>
