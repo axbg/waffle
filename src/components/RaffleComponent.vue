@@ -17,7 +17,7 @@ const state = reactive({
 });
 
 const computedName = computed(() => {
-    return props.dataSource + props.images[state.image++];
+    return props.dataSource + '/' + props.images[state.image++];
 });
 
 const runImages = () => {

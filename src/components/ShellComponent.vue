@@ -7,6 +7,8 @@ import axios from 'axios';
 
 import { reactive } from 'vue';
 
+const allowedExtensions = ['jpg', 'jpeg', 'png'];
+
 const state = reactive({
   showLanding: true,
   showGallery: false,
@@ -20,7 +22,9 @@ const loadedDataSource = async (dataSource) => {
     state.dataSource = dataSource;
 
     const response = await axios.get(dataSource);
-    state.images = response.data.files.filter(file => file.root === '/').map(file => file.base);
+    state.images = response.data.files
+      .filter(file => allowedExtensions.includes(file.ext))
+      .map(file => file.base);
 
     state.showLanding = false;
     state.showGallery = true;
