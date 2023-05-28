@@ -1,9 +1,20 @@
-<script setup></script>
+<script setup>
+const props = defineProps({
+  companyLogo: {
+    type: String,
+    default: "",
+  },
+  eventLogo: {
+    type: String,
+    default: "",
+  },
+});
+</script>
 
 <template>
   <div class="header-container">
-    <img src="/logo-placeholder.png" class="logo" />
-    <img src="/logo-placeholder.png" class="logo" />
+    <img :src="props.companyLogo" class="logo" />
+    <img :src="props.eventLogo" class="logo" />
   </div>
 </template>
 
@@ -15,6 +26,7 @@
 }
 .logo {
   width: 30vw;
-  height: 10vh;
+  max-width: 250px;
+  max-height: 10vh;
 }
 </style>

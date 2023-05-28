@@ -7,6 +7,15 @@ const speedUp = (x) =>
   x.timeout > props.defaultTimeoutLowerLimit ? x.timeout * 0.9 : x.timeout;
 const slowDown = (x) =>
   x.timeout <= props.defaultTimeoutUpperLimit ? x.timeout * 1.1 : x.timeout;
+const fireworksOptions = {
+  decay: {
+    min: 0.01,
+    max: 0.015,
+  },
+  traceLength: 1.1,
+  acceleration: 1.2,
+  explosion: 8,
+};
 
 const props = defineProps({
   defaultTimeoutUpperLimit: {
@@ -35,6 +44,7 @@ const state = reactive({
   interval: null,
   timeout: props.defaultTimeoutUpperLimit,
   currentFormula: speedUp,
+  stopEnabled: true,
   restartEnabled: false,
   showFireworks: false,
 });
@@ -61,7 +71,11 @@ const runImages = () => {
     setTimeout(() => {
       state.restartEnabled = true;
       state.showFireworks = true;
-    }, 1000);
+
+      setTimeout(() => {
+        state.showFireworks = false;
+      }, 30000);
+    }, 800);
   }
 };
 
@@ -71,6 +85,7 @@ const startInterval = () => {
 };
 
 const stopInterval = () => {
+  state.stopEnabled = false;
   state.currentFormula = slowDown;
 };
 
@@ -81,6 +96,8 @@ const restartRaffle = () => {
   state.timeout = props.defaultTimeoutUpperLimit;
   state.currentFormula = speedUp;
 
+  state.showFireworks = false;
+  state.stopEnabled = true;
   startInterval();
 };
 
@@ -106,7 +123,13 @@ onMounted(() => {
     <p>There are {{ state.images.length }} images in the raffle</p>
   </div>
   <div class="control-container">
-    <button class="material-button" @click="stopInterval">Stop</button>
+    <button
+      :disabled="!state.stopEnabled"
+      class="material-button"
+      @click="stopInterval"
+    >
+      Stop
+    </button>
     <button
       class="material-button"
       :disabled="!state.restartEnabled"
@@ -120,9 +143,9 @@ onMounted(() => {
       Gallery
     </button>
   </div>
-  <!-- <div class="fireworks-container">
-        <Fireworks/>
-    </div> -->
+  <div v-if="state.showFireworks" class="fireworks-container">
+    <Fireworks :options="fireworksOptions" />
+  </div>
 </template>
 
 <style>
@@ -151,7 +174,7 @@ onMounted(() => {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   z-index: 5;
 }
 </style>

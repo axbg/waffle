@@ -16,6 +16,8 @@ const state = reactive({
   showRaffle: false,
   dataSource: "",
   images: [],
+  companyLogo: "",
+  eventLogo: "",
 });
 
 const loadedDataSource = async (dataSource, storeValue = true) => {
@@ -53,6 +55,14 @@ const showGallery = () => {
   state.showRaffle = false;
 };
 
+const reloadSettings = (newCompanyLogo, newEventLogo) => {
+  state.companyLogo = newCompanyLogo;
+  state.eventLogo = newEventLogo;
+
+  localStorage.setItem("companyLogo", state.companyLogo);
+  localStorage.getItem("eventLogo", state.eventLogo);
+};
+
 onMounted(() => {
   const dataSource = localStorage.getItem("dataSource");
   if (dataSource) {
@@ -60,13 +70,24 @@ onMounted(() => {
   } else {
     state.showLanding = true;
   }
+
+  state.companyLogo =
+    localStorage.getItem("companyLogo") || "logo-placeholder.png";
+  state.eventLogo = localStorage.getItem("eventLogo") || "logo-placeholder.png";
 });
 </script>
 
 <template>
   <div class="shell-container">
-    <ControlComponent />
-    <HeaderComponent />
+    <ControlComponent
+      :company-logo="state.companyLogo"
+      :event-logo="state.eventLogo"
+      @reload-settings="reloadSettings"
+    />
+    <HeaderComponent
+      :company-logo="state.companyLogo"
+      :event-logo="state.eventLogo"
+    />
     <div class="content-container">
       <LandingComponent
         v-if="state.showLanding"

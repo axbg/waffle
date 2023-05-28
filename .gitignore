@@ -130,3 +130,4 @@ dist
 .pnp.*
 **/.DS_Store
 public/contest
+public/logo

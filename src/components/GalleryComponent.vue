@@ -14,6 +14,7 @@ const props = defineProps({
     },
   },
 });
+
 const images = ref([]);
 
 const emit = defineEmits(["selected-data-source"]);
@@ -62,7 +63,7 @@ onMounted(() => {
         class="image-holder"
         @click="removeImage(index)"
       >
-        <img class="image" :src="getImage(index)" />
+        <img class="image" :title="index" :src="getImage(index)" />
       </div>
     </div>
     <p>Loaded {{ images.length }} pictures</p>
