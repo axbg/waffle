@@ -8,7 +8,7 @@ const images = ref([]);
 const emit = defineEmits(['selectedDataSource'])
 
 const getImage = (image) => {
-    return props.dataSource + image;
+    return props.dataSource + '/' + image;
 }
 
 const shuffleImages = () => {
@@ -68,9 +68,7 @@ onMounted(() => {
 .separate-row-bigger {
     display: block;
     margin: 0 auto;
-    padding: 15px;
     width: 380px;
-    height: 100%;
 }
 button {
     margin: 10px;
