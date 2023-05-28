@@ -36,6 +36,7 @@ const loadedDataSource = async (dataSource, storeValue = true) => {
     localStorage.removeItem("dataSource");
     alert("There was an error loading the resource. Please try again.");
     console.log(err);
+    state.showLanding = true;
   }
 }
 
@@ -44,6 +45,11 @@ const selectedDataSource = (images) => {
 
   state.showGallery = false;
   state.showRaffle = true;
+}
+
+const showGallery = () => {
+  state.showGallery = true;
+  state.showRaffle = false;
 }
 
 onMounted(() => {
@@ -62,7 +68,7 @@ onMounted(() => {
     <div class="content-container">
       <LandingComponent v-if="state.showLanding" @loadedDataSource="loadedDataSource"/>
       <GalleryComponent v-if="state.showGallery" @selectedDataSource="selectedDataSource" :dataSource="state.dataSource" :images="state.images"/>
-      <RaffleComponent v-if="state.showRaffle" defaultTimeoutUpperLimit="600" defaultTimeoutLowerLimit="100" :dataSource="state.dataSource" :images="state.images"/>
+      <RaffleComponent v-if="state.showRaffle" @showGallery="showGallery" defaultTimeoutUpperLimit="600" defaultTimeoutLowerLimit="100" :dataSource="state.dataSource" :images="state.images"/>
     </div>
   </div>
 
