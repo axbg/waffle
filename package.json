@@ -1,5 +1,5 @@
 {
-  "name": "images",
+  "name": "raffler",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,12 @@
   },
   "dependencies": {
     "@fireworks-js/vue": "^2.10.4",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "array-shuffle": "^3.0.0",
     "axios": "^1.4.0",
+    "usemodal-vue3": "^0.3.7",
     "vue": "^3.3.2"
   },
   "devDependencies": {
