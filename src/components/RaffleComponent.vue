@@ -26,10 +26,6 @@ const props = defineProps({
     type: Number,
     default: 100,
   },
-  dataSource: {
-    type: String,
-    default: "",
-  },
   inputImages: {
     type: Array,
     default() {
@@ -47,12 +43,17 @@ const state = reactive({
   stopEnabled: true,
   restartEnabled: false,
   showFireworks: false,
+  showCurrentImage: false,
 });
 
 const emit = defineEmits(["showGallery"]);
 
-const currentImage = computed(() => {
-  return props.dataSource + "/" + state.images[state.image];
+const currentImageName = computed(() => {
+  return state.images[state.image].name;
+});
+
+const currentImageData = computed(() => {
+  return state.images[state.image].data;
 });
 
 const moveToNextImage = () => {
@@ -113,13 +114,20 @@ const showGallery = () => {
 
 onMounted(() => {
   state.images = [...props.inputImages];
+  state.showCurrentImage = true;
   startInterval();
 });
 </script>
 
 <template>
   <div class="image-container">
-    <img :src="currentImage" width="1000" height="400" />
+    <img
+      v-if="state.showCurrentImage"
+      :src="currentImageData"
+      :title="currentImageName"
+      width="1000"
+      height="400"
+    />
     <p>There are {{ state.images.length }} images in the raffle</p>
   </div>
   <div class="control-container">

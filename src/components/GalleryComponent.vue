@@ -3,10 +3,6 @@ import { onMounted, ref } from "vue";
 import arrayShuffle from "array-shuffle";
 
 const props = defineProps({
-  dataSource: {
-    type: String,
-    default: "",
-  },
   inputImages: {
     type: Array,
     default() {
@@ -19,14 +15,9 @@ const images = ref([]);
 
 const emit = defineEmits(["selected-data-source"]);
 
-const getImage = (image) => {
-  return props.dataSource + "/" + image;
-};
-
 const removeImage = (index) => {
   if (confirm("Do you want to remove the selected image?")) {
-    images.value = images.value.filter((image) => image !== index);
-    console.log(images.value);
+    images.value = images.value.filter((image) => image.name !== index);
   }
 };
 
@@ -36,7 +27,7 @@ const shuffleImages = () => {
 
 const loadOtherSource = () => {
   if (
-    confirm("Are you sure you want to load pictures from another datasource?")
+    confirm("Are you sure you want to load pictures from another data source?")
   ) {
     localStorage.removeItem("dataSource");
     location.reload();
@@ -59,11 +50,11 @@ onMounted(() => {
     <div class="gallery">
       <div
         v-for="index in images"
-        :key="index"
+        :key="index.name"
         class="image-holder"
-        @click="removeImage(index)"
+        @click="removeImage(index.name)"
       >
-        <img class="image" :title="index" :src="getImage(index)" />
+        <img class="image" :title="index.name" :src="index.data" />
       </div>
     </div>
     <p>Loaded {{ images.length }} pictures</p>
@@ -86,7 +77,7 @@ onMounted(() => {
   text-align: center;
 }
 .gallery {
-  height: 60vh;
+  height: 55vh;
 
   display: flex;
   flex-wrap: wrap;

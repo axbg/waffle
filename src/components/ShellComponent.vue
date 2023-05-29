@@ -9,6 +9,7 @@ import axios from "axios";
 import { reactive, onMounted } from "vue";
 
 const allowedExtensions = ["jpg", "jpeg", "png"];
+const logoPlaceholder = "logo-placeholder.png";
 
 const state = reactive({
   showLanding: false,
@@ -20,14 +21,30 @@ const state = reactive({
   eventLogo: "",
 });
 
-const loadedDataSource = async (dataSource, storeValue = true) => {
+const loadedLocalSource = (files) => {
+  state.showLanding = false;
+  state.showGallery = true;
+
+  for (const file of files) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = (ev) => {
+      state.images.push({ name: file.name, data: ev.target.result });
+    };
+  }
+};
+
+const loadedRemoteSource = async (dataSource, storeValue = true) => {
   try {
     state.dataSource = dataSource;
 
     const response = await axios.get(dataSource);
     state.images = response.data.files
       .filter((file) => allowedExtensions.includes(file.ext))
-      .map((file) => file.base);
+      .map((file) => {
+        return { name: file.base, data: state.dataSource + "/" + file.base };
+      });
 
     state.showLanding = false;
     state.showGallery = true;
@@ -56,24 +73,25 @@ const showGallery = () => {
 };
 
 const reloadSettings = (newCompanyLogo, newEventLogo) => {
-  state.companyLogo = newCompanyLogo;
-  state.eventLogo = newEventLogo;
+  state.companyLogo = newCompanyLogo || logoPlaceholder;
+  state.eventLogo = newEventLogo || logoPlaceholder;
 
   localStorage.setItem("companyLogo", state.companyLogo);
-  localStorage.getItem("eventLogo", state.eventLogo);
+  localStorage.setItem("eventLogo", state.eventLogo);
 };
 
 onMounted(() => {
   const dataSource = localStorage.getItem("dataSource");
   if (dataSource) {
-    loadedDataSource(dataSource, false);
+    loadedRemoteSource(dataSource, false);
   } else {
     state.showLanding = true;
   }
 
-  state.companyLogo =
-    localStorage.getItem("companyLogo") || "logo-placeholder.png";
-  state.eventLogo = localStorage.getItem("eventLogo") || "logo-placeholder.png";
+  reloadSettings(
+    localStorage.getItem("companyLogo"),
+    localStorage.getItem("eventLogo")
+  );
 });
 </script>
 
@@ -91,11 +109,11 @@ onMounted(() => {
     <div class="content-container">
       <LandingComponent
         v-if="state.showLanding"
-        @loaded-data-source="loadedDataSource"
+        @loaded-local-source="loadedLocalSource"
+        @loaded-data-source="loadedRemoteSource"
       />
       <GalleryComponent
         v-if="state.showGallery"
-        :data-source="state.dataSource"
         :input-images="state.images"
         @selected-data-source="selectedDataSource"
       />
@@ -103,7 +121,6 @@ onMounted(() => {
         v-if="state.showRaffle"
         default-timeout-upper-limit="600"
         default-timeout-lower-limit="100"
-        :data-source="state.dataSource"
         :input-images="state.images"
         @show-gallery="showGallery"
       />
@@ -117,5 +134,6 @@ onMounted(() => {
 }
 .content-container {
   width: 100%;
+  margin-top: 5vh;
 }
 </style>
