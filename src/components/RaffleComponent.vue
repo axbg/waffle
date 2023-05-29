@@ -4,9 +4,9 @@ import { onMounted, reactive } from "vue";
 import { Fireworks } from "@fireworks-js/vue";
 
 const speedUp = (x) =>
-  x.timeout > props.defaultTimeoutLowerLimit ? x.timeout * 0.9 : x.timeout;
+  x.timeout > props.timeoutLowerLimit ? x.timeout * 0.9 : x.timeout;
 const slowDown = (x) =>
-  x.timeout <= props.defaultTimeoutUpperLimit ? x.timeout * 1.1 : x.timeout;
+  x.timeout <= props.timeoutUpperLimit ? x.timeout * 1.1 : x.timeout;
 const fireworksOptions = {
   decay: {
     min: 0.01,
@@ -18,11 +18,11 @@ const fireworksOptions = {
 };
 
 const props = defineProps({
-  defaultTimeoutUpperLimit: {
+  timeoutUpperLimit: {
     type: Number,
     default: 600,
   },
-  defaultTimeoutLowerLimit: {
+  timeoutLowerLimit: {
     type: Number,
     default: 100,
   },
@@ -38,7 +38,7 @@ const state = reactive({
   image: 0,
   images: [],
   interval: null,
-  timeout: props.defaultTimeoutUpperLimit,
+  timeout: props.timeoutUpperLimit,
   currentFormula: speedUp,
   stopEnabled: true,
   restartEnabled: false,
@@ -66,7 +66,7 @@ const runImages = () => {
 
   clearInterval(state.interval);
 
-  if (state.timeout <= props.defaultTimeoutUpperLimit) {
+  if (state.timeout <= props.timeoutUpperLimit) {
     state.interval = setInterval(runImages, state.timeout);
   } else {
     setTimeout(() => {
@@ -94,7 +94,7 @@ const restartRaffle = () => {
   state.images.splice(state.image, 1);
   moveToNextImage();
 
-  state.timeout = props.defaultTimeoutUpperLimit;
+  state.timeout = props.timeoutUpperLimit;
   state.currentFormula = speedUp;
 
   state.showFireworks = false;

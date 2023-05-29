@@ -78,15 +78,14 @@ onMounted(() => {
 }
 .gallery {
   height: 55vh;
-
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   row-gap: 5px;
   column-gap: 5px;
-
   overflow-y: auto;
   overflow-x: hidden;
+  padding: 10px;
 }
 .image-holder {
   cursor: not-allowed;

@@ -4,12 +4,15 @@ import LandingComponent from "./LandingComponent.vue";
 import GalleryComponent from "./GalleryComponent.vue";
 import RaffleComponent from "./RaffleComponent.vue";
 import ControlComponent from "./ControlComponent.vue";
+import FooterComponent from "./FooterComponent.vue";
 
 import axios from "axios";
 import { reactive, onMounted } from "vue";
 
 const allowedExtensions = ["jpg", "jpeg", "png"];
 const logoPlaceholder = "logo-placeholder.png";
+const defaultTimeoutUpperLimit = 600;
+const defaultTimeoutLowerLimit = 100;
 
 const state = reactive({
   showLanding: false,
@@ -19,6 +22,9 @@ const state = reactive({
   images: [],
   companyLogo: "",
   eventLogo: "",
+  accentColor: "",
+  timeoutUpperLimit: defaultTimeoutUpperLimit,
+  timeoutLowerLimit: defaultTimeoutLowerLimit,
 });
 
 const loadedLocalSource = (files) => {
@@ -72,12 +78,35 @@ const showGallery = () => {
   state.showRaffle = false;
 };
 
-const reloadSettings = (newCompanyLogo, newEventLogo) => {
+const reloadSettings = (
+  newCompanyLogo,
+  newEventLogo,
+  newAccentColor,
+  newTimeoutUpperLimit,
+  newTimeoutLowerLimit
+) => {
   state.companyLogo = newCompanyLogo || logoPlaceholder;
   state.eventLogo = newEventLogo || logoPlaceholder;
+  state.accentColor = newAccentColor || null;
+  state.timeoutUpperLimit = Number.isInteger(newTimeoutUpperLimit)
+    ? newTimeoutUpperLimit
+    : defaultTimeoutUpperLimit;
+  state.timeoutLowerLimit = Number.isInteger(newTimeoutLowerLimit)
+    ? newTimeoutLowerLimit
+    : defaultTimeoutLowerLimit;
 
   localStorage.setItem("companyLogo", state.companyLogo);
   localStorage.setItem("eventLogo", state.eventLogo);
+  localStorage.setItem("timeoutUpperLimit", state.timeoutUpperLimit);
+  localStorage.setItem("timeoutLowerLimit", state.timeoutLowerLimit);
+
+  if (state.accentColor) {
+    localStorage.setItem("accentColor", state.accentColor);
+    document.documentElement.style.setProperty(
+      "--accent-color",
+      state.accentColor
+    );
+  }
 };
 
 onMounted(() => {
@@ -90,7 +119,10 @@ onMounted(() => {
 
   reloadSettings(
     localStorage.getItem("companyLogo"),
-    localStorage.getItem("eventLogo")
+    localStorage.getItem("eventLogo"),
+    localStorage.getItem("accentColor"),
+    localStorage.getItem("timeoutUpperLimit"),
+    localStorage.getItem("timeoutLowerLimit")
   );
 });
 </script>
@@ -100,6 +132,9 @@ onMounted(() => {
     <ControlComponent
       :company-logo="state.companyLogo"
       :event-logo="state.eventLogo"
+      :accent-color="state.accentColor"
+      :timeout-upper-limit="state.timeoutUpperLimit"
+      :timeout-lower-limit="state.timeoutLowerLimit"
       @reload-settings="reloadSettings"
     />
     <HeaderComponent
@@ -119,11 +154,12 @@ onMounted(() => {
       />
       <RaffleComponent
         v-if="state.showRaffle"
-        default-timeout-upper-limit="600"
-        default-timeout-lower-limit="100"
+        :timeout-upper-limit="state.timeoutUpperLimit"
+        :timeout-lower-limit="state.timeoutLowerLimit"
         :input-images="state.images"
         @show-gallery="showGallery"
       />
+      <FooterComponent />
     </div>
   </div>
 </template>
@@ -134,6 +170,5 @@ onMounted(() => {
 }
 .content-container {
   width: 100%;
-  margin-top: 5vh;
 }
 </style>

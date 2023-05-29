@@ -11,6 +11,18 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  accentColor: {
+    type: String,
+    default: "",
+  },
+  timeoutUpperLimit: {
+    type: Number,
+    default: 600,
+  },
+  timeoutLowerLimit: {
+    type: Number,
+    default: 100,
+  },
 });
 
 const emit = defineEmits(["reload-settings"]);
@@ -18,6 +30,9 @@ const emit = defineEmits(["reload-settings"]);
 const visibleModal = ref(false);
 const companyLogoField = ref("");
 const eventLogoField = ref("");
+const accentColorField = ref("");
+const timeoutUpperLimitField = ref(0);
+const timeoutLowerLimitField = ref(0);
 
 const toggleControlModal = () => {
   const visibleState = !visibleModal.value;
@@ -25,13 +40,23 @@ const toggleControlModal = () => {
   if (visibleState) {
     companyLogoField.value = props.companyLogo;
     eventLogoField.value = props.eventLogo;
+    accentColorField.value = props.accentColor;
+    timeoutUpperLimitField.value = props.timeoutUpperLimit;
+    timeoutLowerLimitField.value = props.timeoutLowerLimit;
   }
 
   visibleModal.value = visibleState;
 };
 
 const updateSettings = () => {
-  emit("reload-settings", companyLogoField.value, eventLogoField.value);
+  emit(
+    "reload-settings",
+    companyLogoField.value,
+    eventLogoField.value,
+    accentColorField.value,
+    timeoutUpperLimitField.value,
+    timeoutLowerLimitField.value
+  );
   toggleControlModal();
 };
 </script>
@@ -42,10 +67,26 @@ const updateSettings = () => {
   </div>
   <Modal v-model:visible="visibleModal" title="Control Options">
     <div class="control-content">
-      <label>Company Logo URL</label>
+      <label>Company logo URL</label>
       <input v-model="companyLogoField" type="text" />
-      <label>Event Logo URL</label>
+
+      <label>Event logo URL</label>
       <input v-model="eventLogoField" type="text" />
+
+      <label>Main accent color</label>
+      <input v-model="accentColorField" type="text" />
+
+      <label>Minimum raffle speed</label>
+      <input
+        v-model="timeoutUpperLimitField"
+        type="number"
+        min="600"
+        max="1000"
+      />
+
+      <label>Maximum raffle speed</label>
+      <input v-model="timeoutLowerLimitField" type="number" min="1" max="599" />
+
       <button class="material-button" @click="updateSettings">Save</button>
     </div>
   </Modal>
