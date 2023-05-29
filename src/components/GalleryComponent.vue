@@ -77,7 +77,7 @@ onMounted(() => {
   text-align: center;
 }
 .gallery {
-  height: 55vh;
+  height: 52vh;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -100,7 +100,6 @@ onMounted(() => {
 .separate-row-bigger {
   display: block;
   margin: 0 auto;
-  width: 380px;
 }
 button {
   margin: 10px;
