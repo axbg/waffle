@@ -11,6 +11,7 @@ import { reactive, onMounted } from "vue";
 
 const allowedExtensions = ["jpg", "jpeg", "png"];
 const logoPlaceholder = "logo-placeholder.png";
+const defaultColor = "#bd00ff";
 const defaultTimeoutUpperLimit = 600;
 const defaultTimeoutLowerLimit = 100;
 
@@ -87,7 +88,7 @@ const reloadSettings = (
 ) => {
   state.companyLogo = newCompanyLogo || logoPlaceholder;
   state.eventLogo = newEventLogo || logoPlaceholder;
-  state.accentColor = newAccentColor || null;
+  state.accentColor = newAccentColor || defaultColor;
   state.timeoutUpperLimit = Number.isInteger(newTimeoutUpperLimit)
     ? newTimeoutUpperLimit
     : defaultTimeoutUpperLimit;
@@ -99,14 +100,12 @@ const reloadSettings = (
   localStorage.setItem("eventLogo", state.eventLogo);
   localStorage.setItem("timeoutUpperLimit", state.timeoutUpperLimit);
   localStorage.setItem("timeoutLowerLimit", state.timeoutLowerLimit);
+  localStorage.setItem("accentColor", state.accentColor);
 
-  if (state.accentColor) {
-    localStorage.setItem("accentColor", state.accentColor);
-    document.documentElement.style.setProperty(
-      "--accent-color",
-      state.accentColor
-    );
-  }
+  document.documentElement.style.setProperty(
+    "--accent-color",
+    state.accentColor
+  );
 };
 
 onMounted(() => {

@@ -1,10 +1,7 @@
 <script setup></script>
 
 <template>
-  <svg
-    class="svg-container"
-    viewBox="0 0 10 1"
-  >
+  <svg class="svg-container" viewBox="0 0 10 1">
     <polygon points="30,0 -5,1 2,1"></polygon>
   </svg>
   <div class="footer-text-container">
