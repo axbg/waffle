@@ -2,6 +2,8 @@
 
 A small app that helps with randomized image picking (with support for dynamic branding)
 
+[live thanks to netlify](https://harmonious-salmiakki-a4c12c.netlify.app/)
+
 ## Project Setup
 
 ```sh
