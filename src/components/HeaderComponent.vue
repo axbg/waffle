@@ -28,5 +28,6 @@ const props = defineProps({
   width: 30vw;
   max-width: 250px;
   max-height: 10vh;
+  object-fit: contain;
 }
 </style>
