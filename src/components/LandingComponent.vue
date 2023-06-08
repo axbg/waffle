@@ -63,7 +63,7 @@ const loadDataSource = () => {
   </div>
 </template>
 
-<style scoped>
+<style>
 .landing-container {
   width: 500px;
   margin: 0 auto;

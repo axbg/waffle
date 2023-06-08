@@ -5,6 +5,7 @@ import GalleryComponent from "./GalleryComponent.vue";
 import RaffleComponent from "./RaffleComponent.vue";
 import ControlComponent from "./ControlComponent.vue";
 import FooterComponent from "./FooterComponent.vue";
+import LoginComponent from "./LoginComponent.vue";
 
 import axios from "axios";
 import { reactive, onMounted } from "vue";
@@ -14,9 +15,11 @@ const logoPlaceholder = "logo-placeholder.png";
 const defaultColor = "#bd00ff";
 const defaultTimeoutUpperLimit = 600;
 const defaultTimeoutLowerLimit = 100;
+const requireAuthentication = !!import.meta.env.VITE_REQUIRE_AUTHENTICATION;
 
 const state = reactive({
   showLanding: false,
+  showLogin: false,
   showGallery: false,
   showRaffle: false,
   dataSource: "",
@@ -47,13 +50,14 @@ const loadedRemoteSource = async (dataSource, storeValue = true) => {
     state.dataSource = dataSource;
 
     const response = await axios.get(dataSource);
-    state.images = response.data.files
-      .filter((file) => allowedExtensions.includes(file.ext))
+    state.images = response.data
+      .filter((file) => allowedExtensions.some((ext) => file.includes(ext)))
       .map((file) => {
-        return { name: file.base, data: state.dataSource + "/" + file.base };
+        return { name: file, data: state.dataSource + "/" + file };
       });
 
     state.showLanding = false;
+    state.showLogin = false;
     state.showGallery = true;
 
     if (storeValue) {
@@ -63,7 +67,7 @@ const loadedRemoteSource = async (dataSource, storeValue = true) => {
     localStorage.removeItem("dataSource");
     alert("There was an error loading the resource. Please try again.");
     console.log(err);
-    state.showLanding = true;
+    showFirstPage();
   }
 };
 
@@ -108,12 +112,20 @@ const reloadSettings = (
   );
 };
 
+const showFirstPage = () => {
+  if (requireAuthentication) {
+    state.showLogin = true;
+  } else {
+    state.showLanding = true;
+  }
+};
+
 onMounted(() => {
   const dataSource = localStorage.getItem("dataSource");
   if (dataSource) {
     loadedRemoteSource(dataSource, false);
   } else {
-    state.showLanding = true;
+    showFirstPage();
   }
 
   reloadSettings(
@@ -141,6 +153,10 @@ onMounted(() => {
       :event-logo="state.eventLogo"
     />
     <div class="content-container">
+      <LoginComponent
+        v-if="state.showLogin"
+        @loaded-data-source="loadedRemoteSource"
+      />
       <LandingComponent
         v-if="state.showLanding"
         @loaded-local-source="loadedLocalSource"
