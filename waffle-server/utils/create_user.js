@@ -1,7 +1,7 @@
 require('dotenv').config();
 
-const findUser = require('../db').findUser;
-const createUser = require('../db').createUser;
+const findUser = require('../modules/db').findUser;
+const createUser = require('../modules/db').createUser;
 
 if (process.argv.length !== 4) {
     console.log("You must pass the username and the password");

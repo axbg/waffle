@@ -3,17 +3,19 @@ const open = require('sqlite').open;
 
 const DB = process.env.db_name || "default.db";
 const query = require('./query');
+const security = require('./security');
 
 const findUser = async (username) => {
-    return await execute(async (db) => !!(await db.get(query.findUserQuery, [username])));
+    return await execute(async (db) => await db.get(query.findUserQuery, [username]));
 }
 
 const verifyUser = async (username, password) => {
-    return await execute(async (db) => !!(await db.get(query.verifyUserQuery, [username, password])));
+    const user = await findUser(username);
+    return user && await security.verifyPassword(password, user.password);
 };
 
 const createUser = async (username, password) => {
-    return await execute(async (db) => await db.run(query.createUserQuery, [username, password]));
+    return await execute(async (db) => await db.run(query.createUserQuery, [username, await security.hash(password)]));
 };
 
 const execute = async (method) => {
