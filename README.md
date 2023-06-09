@@ -1,3 +1,4 @@
+![logo](./public/favicon.ico)
 # w(r)affle
 
 A small app that helps with randomized image picking (with support for dynamic branding)
