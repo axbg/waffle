@@ -1,25 +1,27 @@
 # w(r)affle
 
-A small app that helps with randomized image picking (with support for dynamic branding)
+A small app that helps with randomized image picking (with support for dynamic branding), *now with auth support for images that should not be leaked on the Internet*
 
-[live thanks to netlify](https://harmonious-salmiakki-a4c12c.netlify.app/)
-
-## Project Setup
-
+## Configure the environment file (.env)
 ```sh
-npm install
+port=8080
+images_path=/Users/user/Desktop/secret_pictures
+jwt_secret=something_very_very_secret
+db_name=test_db.db
+# this is just an example, please use better values 
 ```
 
-### Compile and Hot-Reload for Development
-
+## Execute the setup script
 ```sh
-npm run dev
+chmod u+x start.sh
+./start.sh
 ```
 
-### Compile and Minify for Production
-
+## Create an user
 ```sh
-npm run build
+cd waffle-server
+npm run create-user username password
 ```
 
-## To be updated with usage examples soon
+## Enjoy
+The app will start on http://localhost:port_value_from_the_config_file

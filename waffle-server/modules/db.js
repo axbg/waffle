@@ -5,6 +5,10 @@ const DB = process.env.db_name || "default.db";
 const query = require('./query');
 const security = require('./security');
 
+const createUsersTable = async () => {
+    return await execute(async (db) => await db.exec(query.createUsersTableQuery));
+}
+
 const findUser = async (username) => {
     return await execute(async (db) => await db.get(query.findUserQuery, [username]));
 }
@@ -27,6 +31,7 @@ const execute = async (method) => {
 };
 
 module.exports = {
+    createUsersTable,
     findUser,
     verifyUser,
     createUser
