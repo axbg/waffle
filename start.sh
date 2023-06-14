@@ -1,7 +1,12 @@
 # Build FE
 cd ./waffle
+echo "VITE_REQUIRE_AUTHENTICATION=1" > .env
+echo "VITE_LOGIN_PATH=/login" >> .env
 npm install
 npm run build
+
+# Remove FE .env file
+rm .env
 
 # Move FE build to BE
 cd ..
