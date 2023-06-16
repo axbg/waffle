@@ -2,16 +2,16 @@
 import { ref } from "vue";
 import axios from "axios";
 
-const emit = defineEmits(["loaded-data-source"]);
+const LOGIN_PATH = import.meta.env.VITE_LOGIN_PATH || "/login";
 
-const loginPath = import.meta.env.VITE_LOGIN_PATH || "/login";
+const emit = defineEmits(["loaded-data-source"]);
 
 const usernameInput = ref("");
 const passwordInput = ref("");
 
 const login = async () => {
   try {
-    const response = await axios.post(loginPath, {
+    const response = await axios.post(LOGIN_PATH, {
       username: usernameInput.value,
       password: passwordInput.value,
     });
@@ -45,5 +45,3 @@ const login = async () => {
     </div>
   </div>
 </template>
-
-<style scoped></style>

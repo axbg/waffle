@@ -34,6 +34,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["showGallery"]);
+
 const state = reactive({
   image: 0,
   images: [],
@@ -45,8 +47,6 @@ const state = reactive({
   showFireworks: false,
   showCurrentImage: false,
 });
-
-const emit = defineEmits(["showGallery"]);
 
 const currentImageName = computed(() => {
   return state.images[state.image].name;

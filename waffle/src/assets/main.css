@@ -118,7 +118,3 @@ body {
 .material-button:disabled::after {
   opacity: 0;
 }
-
-.modal-vue3-footer {
-  display: none !important;
-}

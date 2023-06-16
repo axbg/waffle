@@ -11,9 +11,9 @@ const props = defineProps({
   },
 });
 
-const images = ref([]);
-
 const emit = defineEmits(["selected-data-source"]);
+
+const images = ref([]);
 
 const removeImage = (index) => {
   if (confirm("Do you want to remove the selected image?")) {

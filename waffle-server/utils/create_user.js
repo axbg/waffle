@@ -16,7 +16,7 @@ findUser(process.argv[2])
         }
 
         createUser(process.argv[2], process.argv[3])
-            .then(result => {
+            .then(_ => {
                 console.log("User was created");
             });
     });

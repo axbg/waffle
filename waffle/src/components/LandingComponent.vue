@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from "vue";
 
-const allowedExtensions = ".jpg,.jpeg,.png";
+const ALLOWED_EXTENSIONS =
+  import.meta.env.VITE_ALLOWED_EXTENSIONS || ".jpg,.jpeg,.png";
 
 const emit = defineEmits(["loaded-data-source", "loaded-local-source"]);
 
@@ -42,7 +43,7 @@ const loadDataSource = () => {
         ref="inputLocalSource"
         type="file"
         class="hidden"
-        :accept="allowedExtensions"
+        :accept="ALLOWED_EXTENSIONS"
         multiple
         @change="loadLocalSource"
       />

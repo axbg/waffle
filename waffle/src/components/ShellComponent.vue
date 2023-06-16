@@ -10,12 +10,14 @@ import LoginComponent from "./LoginComponent.vue";
 import axios from "axios";
 import { reactive, onMounted } from "vue";
 
-const allowedExtensions = ["jpg", "jpeg", "png"];
-const logoPlaceholder = "logo-placeholder.png";
-const defaultColor = "#bd00ff";
-const defaultTimeoutUpperLimit = 600;
-const defaultTimeoutLowerLimit = 100;
-const requireAuthentication = !!import.meta.env.VITE_REQUIRE_AUTHENTICATION;
+const ALLOWED_EXTENSIONS = import.meta.env.VITE_ALLOWED_EXTENSIONS
+  ? import.meta.env.VITE_ALLOWED_EXTENSIONS.split(",")
+  : [".jpg", ".jpeg", ".png"];
+const LOGO_PLACEHOLDER = "logo-placeholder.png";
+const DEFAULT_COLOR = "#bd00ff";
+const DEFAULT_TIMEOUT_UPPER_LIMIT = 600;
+const DEFAULT_TIMEOUT_LOWER_LIMIT = 100;
+const REQUIRE_AUTHENTICATION = !!import.meta.env.VITE_REQUIRE_AUTHENTICATION;
 
 const state = reactive({
   showLanding: false,
@@ -27,8 +29,8 @@ const state = reactive({
   companyLogo: "",
   eventLogo: "",
   accentColor: "",
-  timeoutUpperLimit: defaultTimeoutUpperLimit,
-  timeoutLowerLimit: defaultTimeoutLowerLimit,
+  timeoutUpperLimit: DEFAULT_TIMEOUT_UPPER_LIMIT,
+  timeoutLowerLimit: DEFAULT_TIMEOUT_LOWER_LIMIT,
 });
 
 const loadedLocalSource = (files) => {
@@ -51,7 +53,7 @@ const loadedRemoteSource = async (dataSource, storeValue = true) => {
 
     const response = await axios.get(dataSource);
     state.images = response.data
-      .filter((file) => allowedExtensions.some((ext) => file.includes(ext)))
+      .filter((file) => ALLOWED_EXTENSIONS.some((ext) => file.endsWith(ext)))
       .map((file) => {
         return { name: file, data: state.dataSource + "/" + file };
       });
@@ -90,15 +92,15 @@ const reloadSettings = (
   newTimeoutUpperLimit,
   newTimeoutLowerLimit
 ) => {
-  state.companyLogo = newCompanyLogo || logoPlaceholder;
-  state.eventLogo = newEventLogo || logoPlaceholder;
-  state.accentColor = newAccentColor || defaultColor;
+  state.companyLogo = newCompanyLogo || LOGO_PLACEHOLDER;
+  state.eventLogo = newEventLogo || LOGO_PLACEHOLDER;
+  state.accentColor = newAccentColor || DEFAULT_COLOR;
   state.timeoutUpperLimit = Number.isInteger(newTimeoutUpperLimit)
     ? newTimeoutUpperLimit
-    : defaultTimeoutUpperLimit;
+    : DEFAULT_TIMEOUT_UPPER_LIMIT;
   state.timeoutLowerLimit = Number.isInteger(newTimeoutLowerLimit)
     ? newTimeoutLowerLimit
-    : defaultTimeoutLowerLimit;
+    : DEFAULT_TIMEOUT_LOWER_LIMIT;
 
   localStorage.setItem("companyLogo", state.companyLogo);
   localStorage.setItem("eventLogo", state.eventLogo);
@@ -113,7 +115,7 @@ const reloadSettings = (
 };
 
 const showFirstPage = () => {
-  if (requireAuthentication) {
+  if (REQUIRE_AUTHENTICATION) {
     state.showLogin = true;
   } else {
     state.showLanding = true;
