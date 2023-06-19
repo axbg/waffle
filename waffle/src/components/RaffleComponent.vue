@@ -146,7 +146,7 @@ onMounted(() => {
     </button>
   </div>
   <div class="control-container">
-    <button class="material-button separate-row-bigger" @click="showGallery">
+    <button class="material-button" @click="showGallery">
       Gallery
     </button>
   </div>
@@ -161,23 +161,18 @@ onMounted(() => {
   z-index: 4;
 }
 .responsive-image {
-  max-height: 57vh;
+  height: 57vh;
 }
 .control-container {
   margin: 0 auto;
   width: 20%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .control-container button {
   z-index: 100;
   width: 100%;
   margin: 5px;
-}
-.separater-row-bigger {
-  display: block;
-  margin: 0 auto;
-  width: 380px;
 }
 .fireworks-container {
   position: fixed;
