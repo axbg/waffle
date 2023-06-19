@@ -122,11 +122,10 @@ onMounted(() => {
 <template>
   <div class="image-container">
     <img
+      class="responsive-image"
       v-if="state.showCurrentImage"
       :src="currentImageData"
       :title="currentImageName"
-      width="1000"
-      height="400"
     />
     <p>There are {{ state.images.length }} images in the raffle</p>
   </div>
@@ -160,6 +159,9 @@ onMounted(() => {
 .image-container {
   text-align: center;
   z-index: 4;
+}
+.responsive-image {
+  max-height: 57vh;
 }
 .control-container {
   margin: 0 auto;

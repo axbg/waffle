@@ -81,6 +81,7 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  align-items: center;
   row-gap: 5px;
   column-gap: 5px;
   overflow-y: auto;
