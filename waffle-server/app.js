@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use('/content', checkAuthCookie, serveIndex(process.env.images_path));
-app.use('/content', checkAuthCookie, express.static(process.env.images_path));
+app.use('/content', checkAuthCookie, express.static(process.env.images_path, { maxAge: '2h' }));
 
 app.post('/login', async (req, res) => {
     if (await verifyUser(req.body.username, req.body.password)) {
