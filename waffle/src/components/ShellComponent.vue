@@ -95,11 +95,15 @@ const reloadSettings = (
   state.companyLogo = newCompanyLogo || LOGO_PLACEHOLDER;
   state.eventLogo = newEventLogo || LOGO_PLACEHOLDER;
   state.accentColor = newAccentColor || DEFAULT_COLOR;
-  state.timeoutUpperLimit = Number.isInteger(newTimeoutUpperLimit)
-    ? newTimeoutUpperLimit
+
+  const timeoutUpperLimit = parseInt(newTimeoutUpperLimit);
+  state.timeoutUpperLimit = Number.isInteger(timeoutUpperLimit)
+    ? timeoutUpperLimit
     : DEFAULT_TIMEOUT_UPPER_LIMIT;
-  state.timeoutLowerLimit = Number.isInteger(newTimeoutLowerLimit)
-    ? newTimeoutLowerLimit
+
+  const timeoutLowerLimit = parseInt(newTimeoutLowerLimit);
+  state.timeoutLowerLimit = Number.isInteger(timeoutLowerLimit)
+    ? timeoutLowerLimit
     : DEFAULT_TIMEOUT_LOWER_LIMIT;
 
   localStorage.setItem("companyLogo", state.companyLogo);
