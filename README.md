@@ -3,6 +3,8 @@
 
 A small app that helps with randomized image picking (with support for dynamic branding), *with optional authentication support for images that should not be leaked on the Internet*
 
+The app was used at the [Accenture's booth during the DevTalks 2023 conference](https://i.ibb.co/mqgxR0t/IMG-0673.jpg)
+
 ## Install [node.js](https://nodejs.org/en/download)
 
 ## Clone the repository
